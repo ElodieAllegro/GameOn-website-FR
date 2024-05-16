@@ -1,17 +1,18 @@
 const form = document.querySelector('form')
+
 const message = {
-    first: "Le champs doit comporter entre 2 et 30 caractères,les caractères spéciaux ne sont pas autorisés.",
-    last: "Le champs doit comporter entre 2 et 30 caractères,les caractères spéciaux ne sont pas autorisés.",
+    first: "Veuillez saisir entre 2 et 30 caractères,les caractères spéciaux ne sont pas autorisés.",
+    last: "LVeuillez saisir entre 2 et 30 caractères,les caractères spéciaux ne sont pas autorisés.",
     email: "Veuillez entrer une adresse e-mail valide.",
     quantity: "Veuillez entrer un nombre valide (entre 1 et 99).",
     birthdate: "Vous devez être âgé d'au moins 18 ans pour vous inscrire.",
     location: "Veuillez sélectionner une ville.",
     userConditions: "Veuillez accepter les conditions d'utilisation."
 };
+
 //regex pour la validation du Nom et prénom
 const validateName = (field) => {
     const regexName = /^([A-Za-z|\s]{2,30})?([-]{0,1})?([A-Za-z|\s]{2,30})$/;
-    message.first;
     return regexName.test(field.value);  
 }
 
@@ -19,7 +20,6 @@ const validateName = (field) => {
 //regex pour la validation de l'email 
 const validateEmail = (field) => {
     const regexEmail = /^[\w.-]+@[a-zA-Z\d.-]+\.[a-zA-Z]{2,}$/
-    message.email;
     return regexEmail.test(field.value);
 }
 
@@ -28,11 +28,9 @@ const validateEmail = (field) => {
 const validateBirthdate = (field) => {
     // je récupére la date de naissance 
     const birthdate = new Date(field.value);
-    
     // je cree une date il y a 18 ans 
     const returneighteen = new Date();
     returneighteen.setFullYear(returneighteen.getFullYear() - 18);
-    message.birthdate;
     // je compare la date de naissance avec il y a 18 ans
     return birthdate <= returneighteen;
 }
@@ -41,7 +39,6 @@ const validateBirthdate = (field) => {
 //regex pour valider la quantité et empecher les lettre et les caractères speciaux
 const validateQuantity = (field) => {
     const regexQuantity = /^([0-9]{1,2})$/;
-    message.quantity;
     return regexQuantity.test(field.value);
 
 }
@@ -57,7 +54,6 @@ const validateLocation = () => {
             isChecked = true;
         }
     });
-    message.location;
 //je retourne isChecked
     return isChecked;
 };
@@ -73,39 +69,25 @@ const validateUserConditions = () => {
         isChecked = true;
     }
     //je retourne isChecked
-    message.userConditions;
     return isChecked; 
 }
 
-// const displayError = (field, isValid) => {
-//     if(!isValid){
-//         field.classList.add('error')
-//     } else {
-//         field.classList.remove('error')
-//     }
-    
-// }
 
 const displayError = (field, isValid) => {
     // Sélectionne la div parent .formData
     const formDataDiv = field.closest('.formData'); 
     //creation d'une div sous chaque champs en cas d'erreur
     const errorDiv = document.createElement('div');
-   
-    formDataDiv.appendChild(errorDiv);
-
   
     // Si le champ n'est pas valide
     if (!isValid) {
         // Ajoute l'attribut data-error-visible
         formDataDiv.setAttribute('data-error-visible', 'true');
-        formDataDiv.appendChild(errorDiv);
-        //ajouter la class data-error a la div
-        // errorDiv.classList.add('form-data');
+    
     } else {
         // Supprime l'attribut data-error-visible
         formDataDiv.removeAttribute('data-error-visible');
-        formDataDiv.removeChild(errorDiv);
+      
     }
 };
 
