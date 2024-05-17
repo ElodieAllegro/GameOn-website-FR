@@ -1,15 +1,13 @@
 const form = document.querySelector('form')
-
 const message = {
-    first: "Veuillez saisir entre 2 et 30 caractères,les caractères spéciaux ne sont pas autorisés.",
-    last: "LVeuillez saisir entre 2 et 30 caractères,les caractères spéciaux ne sont pas autorisés.",
+    first: "Veuillez entrer entre 2 et 30 caractères sans caractères spéciaux.",
+    last: "Veuillez entrer entre 2 et 30 caractères sans caractères spéciaux.",
     email: "Veuillez entrer une adresse e-mail valide.",
     quantity: "Veuillez entrer un nombre valide (entre 1 et 99).",
     birthdate: "Vous devez être âgé d'au moins 18 ans pour vous inscrire.",
     location: "Veuillez sélectionner une ville.",
     userConditions: "Veuillez accepter les conditions d'utilisation."
 };
-
 //regex pour la validation du Nom et prénom
 const validateName = (field) => {
     const regexName = /^([A-Za-z|\s]{2,30})?([-]{0,1})?([A-Za-z|\s]{2,30})$/;
@@ -28,6 +26,7 @@ const validateEmail = (field) => {
 const validateBirthdate = (field) => {
     // je récupére la date de naissance 
     const birthdate = new Date(field.value);
+    
     // je cree une date il y a 18 ans 
     const returneighteen = new Date();
     returneighteen.setFullYear(returneighteen.getFullYear() - 18);
@@ -44,9 +43,7 @@ const validateQuantity = (field) => {
 }
 
 //Fonction de validation de la ville choisie une ville doit etre choisie
-const validateLocation = () => {
-    //je recupère les radios
-    const locationRadios = document.querySelectorAll('input[type="radio"][name="location"]');
+const validateLocation = (locationRadios) => {
     let isChecked = false;
     //je boucle sur les radios si une selectionné alors isChecked est vrai
     locationRadios.forEach((radio) => {
@@ -59,9 +56,7 @@ const validateLocation = () => {
 };
 
 //Fonction de validation des conditions d'utilisations
-const validateUserConditions = () => {
-    //je recupère la checkbox
-    const userConditions = document.querySelector('input[type="checkbox"][name="userConditions"]');
+const validateUserConditions = (userConditions) => {    
     //isChecked est faux
     let isChecked = false;
     //si la checkbox est coché alors isChecked est vrai
@@ -69,25 +64,25 @@ const validateUserConditions = () => {
         isChecked = true;
     }
     //je retourne isChecked
+    message.userConditions;
     return isChecked; 
 }
-
 
 const displayError = (field, isValid) => {
     // Sélectionne la div parent .formData
     const formDataDiv = field.closest('.formData'); 
-    //creation d'une div sous chaque champs en cas d'erreur
-    const errorDiv = document.createElement('div');
+    const fieldName = field.getAttribute('name')
+
   
     // Si le champ n'est pas valide
     if (!isValid) {
-        // Ajoute l'attribut data-error-visible
+        // Ajoute l'attribut data-error-visible & data-error qui contient le bon message d'erreur correspondant au champs
         formDataDiv.setAttribute('data-error-visible', 'true');
-    
+        formDataDiv.dataset.error = message[fieldName]
+
     } else {
         // Supprime l'attribut data-error-visible
         formDataDiv.removeAttribute('data-error-visible');
-      
     }
 };
 
@@ -114,8 +109,8 @@ form.addEventListener('submit', (e) => {
     displayError(email, isEmailValid)
     displayError(quantity, isQuantityValid)
     displayError(birthdate, isBirthdateValid)
-    // displayError(location, isLocationValid)
-    // displayError(userConditions, isUserConditionsValid)
+    displayError(location[0], isLocationValid)
+    displayError(userConditions, isUserConditionsValid)
 
    
     if(isFirstValid && isLastValid && isEmailValid && isQuantityValid && isBirthdateValid && isLocationValid && isUserConditionsValid){
